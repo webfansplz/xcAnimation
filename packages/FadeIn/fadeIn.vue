@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  name: 'fadeIn'
+  name: 'xc-fadeIn'
 };
 </script>
 <style>

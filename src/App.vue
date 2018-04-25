@@ -1,8 +1,8 @@
 <template>
   <div id="App">
-    <marquee>
-      <marquee-item v-for="(item,i) in box" :key="i">{{item}}</marquee-item>
-    </marquee>
+    <xc-smlsMarquee class="list">
+      <xc-smlsMarquee-item v-for="(item,i) in box" :key="i" tag="li">{{item}}</xc-smlsMarquee-item>
+    </xc-smlsMarquee>
   </div>
 </template>
 <script>
@@ -12,20 +12,14 @@ export default {
     return {
       title: '',
       visible: true,
-      box: []
-    };
-  },
-  created() {
-    setTimeout(() => {
-      this.title = 'javascript';
-      this.box = [
+      box: [
         'Javascript是世界上最好的语言1',
         'Javascript是世界上最好的语言2',
         'Javascript是世界上最好的语言3',
         'Javascript是世界上最好的语言4',
         'Javascript是世界上最好的语言5'
-      ];
-    }, 2800);
+      ]
+    };
   }
 };
 </script>
@@ -34,9 +28,9 @@ export default {
   .list {
     li {
       display: block;
-      width: 200px;
-      height: 40px;
-      line-height: 40px;
+      width: 300px;
+      height: 1.5rem;
+      line-height: 1.5rem;
     }
   }
 }

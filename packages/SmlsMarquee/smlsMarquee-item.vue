@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'xc-marquee-item',
+  name: 'xc-smlsMarquee-item',
   mounted() {
     this.$nextTick(() => {
       this.$parent.init();
