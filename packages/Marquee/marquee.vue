@@ -18,11 +18,6 @@ export default {
     interval: {
       type: Number,
       default: 2000
-    },
-    //切换动画方向
-    direction: {
-      type: String,
-      default: 'up'
     }
   },
   data() {

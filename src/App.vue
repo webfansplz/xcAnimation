@@ -1,6 +1,6 @@
 <template>
   <div id="App">
-    <xc-smlsMarquee class="list">
+    <xc-smlsMarquee class="list" speed="slow">
       <xc-smlsMarquee-item v-for="(item,i) in box" :key="i" tag="li">{{item}}</xc-smlsMarquee-item>
     </xc-smlsMarquee>
   </div>

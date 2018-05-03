@@ -8,32 +8,36 @@
   </div>
 </template>
 <script>
+const AnimationFn = (function() {
+  return (
+    window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    function(callback) {
+      window.setTimeout(callback, 1000 / 60);
+    }
+  );
+})();
 export default {
   name: 'xc-smlsMarquee',
+  props: {
+    //动画速度 fast or slow
+    speed: {
+      type: String,
+      default: 'fast'
+    }
+  },
   data() {
     return {
       Height: 0,
       count: 0,
       curY: 0,
       duration: 0,
-      Timer: null,
-      AnimationFn: null
+      Timer: null
     };
   },
   beforeDestroy() {
     clearInterval(this.Timer);
-  },
-  created() {
-    this.AnimationFn = (function() {
-      return (
-        window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        function(callback) {
-          window.setTimeout(callback, 1000 / 60);
-        }
-      );
-    })();
   },
   methods: {
     init() {
@@ -44,19 +48,14 @@ export default {
       this.$refs.box.appendChild(node);
       this.step();
     },
-    c() {
-      console.log(1);
-    },
     step() {
-      console.log(this.AnimationFn);
-      console.log(window.requestAnimationFrame);
-      this.curY -= 1;
-      // if (this.curY > -120) {
-      //   this.AnimationFn(this.step);
-      // } else {
-      //   this.curY = 0;
-      //   this.AnimationFn(this.step);
-      // }
+      this.curY -= this.speed == 'fast' ? 1 : 0.5;
+      if (this.curY > -this.Height) {
+        AnimationFn(this.step);
+      } else {
+        this.curY = 0;
+        AnimationFn(this.step);
+      }
     }
   }
 };
