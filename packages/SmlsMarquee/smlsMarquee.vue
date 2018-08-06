@@ -1,6 +1,6 @@
 <template>
   <div class="xc-smlsMarquee-wrapper" :style="{height:`${Height}px`}">
-    <div class="xc-smlsMarquee-box" ref="box" :style="{transform:`translateY(${curY}px)`}">
+    <div ref="box" :class="['xc-smlsMarquee-box',{'Animate':status&&type=='stair'}]" :style="{transform:`translateY(${curY}px)`}">
       <ul class="xc-smlsMarquee" ref="list">
         <slot></slot>
       </ul>
@@ -24,7 +24,12 @@ export default {
     //动画速度 fast or slow
     speed: {
       type: String,
-      default: 'fast'
+      default: 'slow'
+    },
+    //跑马灯类型 stair or line
+    type: {
+      type: String,
+      default: 'stair'
     }
   },
   data() {
@@ -33,7 +38,8 @@ export default {
       count: 0,
       curY: 0,
       duration: 0,
-      Timer: null
+      Timer: null,
+      status: true
     };
   },
   beforeDestroy() {
@@ -46,15 +52,34 @@ export default {
       const node = this.$refs.list.cloneNode(true);
       this.Height = this.$refs.list.offsetHeight;
       this.$refs.box.appendChild(node);
-      this.step();
+      this.type == 'stair' && this.stairStep();
+      this.type == 'line' && this.lineStep();
     },
-    step() {
+    stairStep() {
+      const { children } = this.$refs.list;
+      const itemHeight = `${this.Height / children.length}`;
+      this.Timer = setInterval(() => {
+        if (this.curY > -this.Height) {
+          this.status = true;
+          this.curY -= itemHeight;
+          if (this.curY == -this.Height) {
+            clearInterval(this.Timer);
+            setTimeout(() => {
+              this.status = false;
+              this.curY = 0;
+              this.stairStep();
+            }, 300);
+          }
+        }
+      }, this.speed == 'fast' ? 800 : 1500);
+    },
+    lineStep() {
       this.curY -= this.speed == 'fast' ? 1 : 0.5;
       if (this.curY > -this.Height) {
-        AnimationFn(this.step);
+        AnimationFn(this.lineStep);
       } else {
         this.curY = 0;
-        AnimationFn(this.step);
+        AnimationFn(this.lineStep);
       }
     }
   }
@@ -68,6 +93,9 @@ export default {
     width: 100%;
     height: auto;
     overflow: hidden;
+  }
+  .Animate {
+    transition: 0.3s;
   }
   .xc-smlsMarquee {
     padding: 0;
